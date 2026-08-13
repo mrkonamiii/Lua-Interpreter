@@ -5,6 +5,8 @@
 	Date: 15.2.2022
 --]]
 
+print('envload')
+
 type dictionary = { [string]: any }
 type func = (...any?) -> (...any?)
 
