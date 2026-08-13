@@ -30,10 +30,29 @@ local function buildEnvironment()
         end,
         error = error,
         getmetatable = getmetatable,
-        ipairs = ipairs,
+        ipairs = (function()
+            local realIpairs = ipairs
+            if type(realIpairs) == "function" then return realIpairs end
+            return function(t)
+                local i = 0
+                return function()
+                    i = i + 1
+                    local v = rawget(t, i)
+                    if v ~= nil then return i, v end
+                end, t, 0
+            end
+        end)(),
         newproxy = newproxy,
-        next = next,
-        pairs = pairs,
+        next = (function()
+            return (type(next) == "function") and next or error("no usable 'next' available in host environment")
+        end)(),
+        pairs = (function()
+            local realPairs = pairs
+            if type(realPairs) == "function" then return realPairs end
+            return function(t)
+                return next, t, nil
+            end
+        end)(),
         pcall = pcall,
         print = print,
         rawequal = rawequal,
