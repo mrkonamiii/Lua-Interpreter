@@ -1,7 +1,7 @@
 local bit = bit32
 local unpack = table.unpack or unpack
 
-warn('loaddddaa')
+warn('dddada')
 
 local stm_lua_bytecode
 local wrap_lua_func
@@ -1002,9 +1002,12 @@ local function exec_lua_func(exst)
 				local base = A + 3
 				local vals
 				
-				if type(func) ~= "function" then
-				    warn("[DEBUG] TFORLOOP callee is not a function, type:", type(func), "value:", tostring(func),
-				        "line:", exst.lines[pc - 1], "source:", exst.source)
+				-- Luau generalized iteration: bare table used directly (no pairs()/ipairs())
+				if type(func) == "table" then
+				    state = func
+				    func = next
+				    stack[A] = func
+				    stack[A + 1] = state
 				end
 				
 				stack[base + 2] = index
@@ -1012,13 +1015,13 @@ local function exec_lua_func(exst)
 				stack[base] = func
 				
 				vals = {func(state, index)}
-
+				
 				for i = 1, inst.C do stack[base + i - 1] = vals[i] end
-
+				
 				if stack[base] ~= nil then
-					stack[A + 2] = stack[base]
+				    stack[A + 2] = stack[base]
 				else
-					pc = pc + 1
+				    pc = pc + 1
 				end
 			end
 		else
