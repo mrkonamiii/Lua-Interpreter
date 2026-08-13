@@ -1001,11 +1001,15 @@ local function exec_lua_func(exst)
 				local index = stack[A + 2]
 				local base = A + 3
 				local vals
-
+				
+				if type(func) ~= "function" then
+				    warn("[DEBUG] TFORLOOP callee is not a function, type:", type(func), "value:", tostring(func), "state:", tostring(state), "index:", tostring(index))
+				end
+				
 				stack[base + 2] = index
 				stack[base + 1] = state
 				stack[base] = func
-
+				
 				vals = {func(state, index)}
 
 				for i = 1, inst.C do stack[base + i - 1] = vals[i] end
