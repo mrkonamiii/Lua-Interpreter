@@ -1,7 +1,7 @@
 local bit = bit32
 local unpack = table.unpack or unpack
 
-warn('loadssssssssssss')
+warn('loaddddaa')
 
 local stm_lua_bytecode
 local wrap_lua_func
@@ -1003,7 +1003,8 @@ local function exec_lua_func(exst)
 				local vals
 				
 				if type(func) ~= "function" then
-				    warn("[DEBUG] TFORLOOP callee is not a function, type:", type(func), "value:", tostring(func), "state:", tostring(state), "index:", tostring(index))
+				    warn("[DEBUG] TFORLOOP callee is not a function, type:", type(func), "value:", tostring(func),
+				        "line:", exst.lines[pc - 1], "source:", exst.source)
 				end
 				
 				stack[base + 2] = index
