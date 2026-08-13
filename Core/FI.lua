@@ -1,7 +1,7 @@
 local bit = bit32
 local unpack = table.unpack or unpack
 
-print('load')
+warn('loadssssssssssss')
 
 local stm_lua_bytecode
 local wrap_lua_func
