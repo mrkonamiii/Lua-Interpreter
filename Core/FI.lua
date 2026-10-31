@@ -1,8 +1,6 @@
 local bit = bit32
 local unpack = table.unpack or unpack
 
-warn('dddada')
-
 local stm_lua_bytecode
 local wrap_lua_func
 local stm_lua_func
@@ -590,9 +588,6 @@ local function exec_lua_func(exst)
 						else
 						    --[[GETGLOBAL]]
 						    stack[inst.A] = env[inst.const]
-						    if inst.const == "ipairs" then
-						        warn("[DEBUG] GETGLOBAL ipairs ->", type(stack[inst.A]), tostring(stack[inst.A]))
-						    end
 						end
 					elseif op > 6 then
 						--[[GETTABLE]]
@@ -637,9 +632,6 @@ local function exec_lua_func(exst)
 							local A = inst.A
 							local B = inst.B
 							local C = inst.C
-							if type(stack[A]) ~= "function" then
-							    warn("[DEBUG] CALL target is not a function, type:", type(stack[A]), "value:", tostring(stack[A]))
-							end
 							local params
 							local sz_vals, l_vals
 
@@ -749,7 +741,7 @@ local function exec_lua_func(exst)
 				local limit = stack[A + 1]
 				local loops
 
-				if step == math.abs(step) then
+				if step >= 0 then
 					loops = index <= limit
 				else
 					loops = index >= limit
